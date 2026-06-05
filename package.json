@@ -1,0 +1,35 @@
+{
+  "name": "cap-ui5-sample",
+  "version": "1.0.0",
+  "dependencies": {
+    "@sap/cds": "^9",
+    "@sap/xssec": "^4.13.0",
+    "express": "^5",
+    "passport": "^0.7"
+  },
+  "engines": {
+    "node": "^20.x"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2.4",
+    "cds-plugin-ui5": "^0.13.0"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-ui5": "cds watch --open main.cap.service.ui.ui5/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "cds": {
+    "requires": {
+      "auth": "xsuaa",
+      "[development]": {
+        "auth": {
+          "kind": "mocked"
+        }
+      }
+    }
+  },
+  "private": true,
+  "workspaces": [
+    "app/*"
+  ]
+}

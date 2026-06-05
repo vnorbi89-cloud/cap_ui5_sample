@@ -1,0 +1,29 @@
+specVersion: "4.0"
+metadata:
+  name: main.cap.service.ui.ui5
+type: application
+framework:
+  name: SAPUI5
+  version: "1.146.0"
+  libraries:
+    - name: sap.m
+    - name: sap.f
+    - name: sap.ui.layout
+    - name: sap.ui.table
+    - name: sap.ui.core
+    - name: themelib_sap_horizon
+builder:
+  resources:
+    excludes:
+      - "test/**"
+      - "test-resources/**"
+      - "localService/**"
+      - "index-cdn.html"
+  customTasks:
+    - name: ui5-tooling-transpile-task
+      afterTask: replaceVersion
+    - name: ui5-task-zipper
+      afterTask: generateCachebusterInfo
+      configuration:
+        relativePaths: true
+        archiveName: ui5

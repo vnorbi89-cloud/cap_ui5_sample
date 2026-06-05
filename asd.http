@@ -1,0 +1,8 @@
+
+### post user1 to the database endpoint
+POST http://localhost:4004/mainservice/checkConnection
+Content-Type: application/json
+
+{
+  "sample": "123"
+}

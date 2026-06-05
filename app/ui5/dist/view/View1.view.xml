@@ -1,0 +1,12 @@
+<mvc:View controllerName="main.cap.service.ui.ui5.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+
+    <content>
+    <Button id="button1" text="Check Connection 1" press="onCheckConnection1"/>
+    <Button id="button2" text="Check Connection Ez mux" press="onCheckConnection2"/>
+
+    </content>
+    </Page>
+</mvc:View>

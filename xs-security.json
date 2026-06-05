@@ -1,0 +1,39 @@
+{
+  "xsappname": "capui5-xsuaa",
+  "tenant-mode": "dedicated",
+  "authorities": [
+    "$XSAPPNAME.BackendUser"
+  ],
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.TestScope1",
+      "description": "Backend user scope"
+    },
+    {
+      "name": "$XSAPPNAME.BackendUser",
+      "description": "Backend user scope"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "TestScope1",
+      "description": "TestScope1  user role",
+      "scope-references": [
+        "$XSAPPNAME.TestScope1"
+      ]
+    },
+    {
+      "name": "BackendUser",
+      "description": "Backend user role",
+      "scope-references": [
+        "$XSAPPNAME.BackendUser"
+      ]
+    }
+  ],
+    "redirect-uris": [
+      "https://*.hana.ondemand.com**",
+      "https://oauth.pstmn.io/v1/callback",
+      "https://0603fda2trial-dev-cap-c4c-srv.cfapps.us10-001.hana.ondemand.com/login/callback"
+    ]
+  }
+}

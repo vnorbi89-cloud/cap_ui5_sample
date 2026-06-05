@@ -1,0 +1,2 @@
+sap.ui.define(["sap/ui/core/mvc/Controller","sap/m/MessageToast"],(e,o)=>{"use strict";return e.extend("main.cap.service.ui.ui5.controller.View1",{onInit(){},async onCheckConnection1(e){o.show("Check Connection 1 not ok")},async onCheckConnection2(e){try{const e=this.getView().getModel();const n=e.bindContext("/checkConnection(...)");n.setParameter("sample","123213");const t=await n.execute();const c=n.getBoundContext().getObject();console.log("Response:",c);o.show(c.value)}catch(e){console.error("Error:",e);o.show(e)}}})});
+//# sourceMappingURL=View1.controller.js.map

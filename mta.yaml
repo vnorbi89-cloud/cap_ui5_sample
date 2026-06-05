@@ -1,0 +1,131 @@
+_schema-version: "3.2"
+ID: cap-ui5
+version: 1.0.0
+parameters:
+  deploy_mode: html5-repo
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm i
+        - npx cds build --production
+modules:
+
+  - name: capui5-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      memory: 512M
+      disk-quota: 2G
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm
+    requires:
+      - name: capui5-xsuaa
+      - name: capui5-destination-service
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+      
+  - name: ui5
+    type: html5
+    path: app/ui5
+    build-parameters:
+      builder: custom
+      commands:
+        - npm i
+        - npm run build:cf
+      supported-platforms: []
+      build-result: dist
+
+  # --------------- HTML5 App Repo Content Deployer -------------
+  - name: capui5-app-ui-deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: capui5-app-repo-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources
+      requires:
+        - artifacts:
+            - ui5.zip
+          name: ui5
+          target-path: resources/
+
+  # --------------- Destinations Content Deployer ---------------
+  - name: capui5-app-runtime
+    type: com.sap.application.content
+    requires:
+      - name: capui5-destination-service
+        parameters:
+          content-target: true
+      - name: capui5-app-repo-host
+        parameters:
+          service-key:
+            name: capui5-app-repo-host-key
+      - name: capui5-xsuaa
+      - name: srv-api
+    parameters:
+      content:
+        instance:
+          existing_destinations_policy: update
+          destinations:
+            - Name: mainservice-srv-api
+              URL: ~{srv-api/srv-url}
+              Authentication: OAuth2UserTokenExchange
+              TokenServiceInstanceName: capui5-xsuaa
+              TokenServiceKeyName: capui5-xsuaa-key
+              sap.cloud.service: cap.c4c
+            - Name: capui5-app-repo-host
+              ServiceInstanceName: capui5-app-repo-host
+              ServiceKeyName: capui5-app-repo-host-key
+              sap.cloud.service: cap.c4c
+            - Name: capui5-xsuaa
+              ServiceInstanceName: capui5-xsuaa
+              ServiceKeyName: capui5-xsuaa-key
+              sap.cloud.service: cap.c4c
+              Authentication: OAuth2UserTokenExchange
+    build-parameters:
+      no-source: true
+
+resources:
+
+  - name: capui5-xsuaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+
+  - name: capui5-app-repo-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+  - name: capui5-app-repo-runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime
+
+  - name: capui5-destination-service
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+      config:
+        HTML5Runtime_enabled: true
+        version: 1.0.0
+        init_data:
+          instance:
+            existing_destinations_policy: update
+            destinations:
+              - Name: ui5
+                Description: SAPUI5 CDN
+                URL: https://ui5.sap.com
+                Type: HTTP
+                ProxyType: Internet
+                Authentication: NoAuthentication
