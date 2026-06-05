@@ -27,9 +27,22 @@
         "auth": {
           "kind": "mocked"
         }
+      },
+      "CDC_Accounts": {
+        "kind": "odata",
+        "credentials": {
+          "destination": "CDC_Accounts"
+        }
+      },
+      "c4c_dev": {
+        "kind": "rest",
+        "credentials": {
+          "destination": "c4c_dev"
+        }
       }
     }
   },
+      
   "private": true,
   "workspaces": [
     "app/*"
