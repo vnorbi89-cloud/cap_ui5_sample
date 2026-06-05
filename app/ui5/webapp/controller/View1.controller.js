@@ -1,8 +1,10 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
   "sap/ui/model/json/JSONModel",
-    "sap/m/MessageToast"
-], (Controller, JSONModel, MessageToast) => {
+    "sap/m/MessageToast",
+  "sap/m/MessageBox"
+
+], (Controller, JSONModel, MessageToast, MessageBox) => {
     "use strict";
 
     return Controller.extend("main.cap.service.ui.ui5.controller.View1", {
@@ -21,7 +23,7 @@ sap.ui.define([
 
                 this.getView().setModel(oViewModel, "viewModel");
           
-                this.getView().attachEventOnce("modelContextChange", this.checkInit.bind(this));
+            //    this.getView().attachEventOnce("modelContextChange", this.checkInit.bind(this));
 
 
             /*    const fnCheck = () => {
@@ -36,6 +38,29 @@ sap.ui.define([
 
 
         },
+        async onShowFact() {
+            try {
+
+                const oModel = this.getView().getModel();
+
+                const oAction = oModel.bindContext("/testFact(...)");
+
+                await oAction.execute();
+                const data = oAction.getBoundContext().getObject();
+
+                const fact = data.value || "No fact available";
+
+                console.log("Random Fact:", fact);
+                MessageBox.information(fact, {
+                title: "Facts!!!",
+                actions: [MessageBox.Action.OK]
+            });
+            } catch (err) {
+                console.error("Error fetching fact:", err);
+                MessageToast.show("Error fetching fact: " + err.message);
+            }
+        },
+
 
          async checkInit(oEvent) {
            try{ 
@@ -72,9 +97,10 @@ sap.ui.define([
                 const data = oAction.getBoundContext().getObject();
 
                 const results = data.value || [];
-
-                console.log("Response:", data);
-                MessageToast.show(results);
+                const c4 = `ID: ${data.displayId}\nSubject: ${data.subject}\nOrigin: ${data.origin}\nPriority: ${data.priority}`;
+                 MessageBox.information(c4, {
+                title: "C4C info",
+                actions: [MessageBox.Action.OK]});
             } catch (err) {
                 console.error("Error:", err);
                 MessageToast.show(err);
@@ -95,11 +121,12 @@ sap.ui.define([
 
                 const results = data.value || [];
 
+
                 console.log("Response:", data);
                 MessageToast.show(results);
             } catch (err) {
-                console.error("Error:", err);
-                MessageToast.show(err);
+                console.error("Error:", err.message);
+                MessageToast.show(err.message);
             }
 
         }

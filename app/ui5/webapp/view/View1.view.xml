@@ -9,11 +9,12 @@
 
             <Input
                 id="inputSample"
-                placeholder="Enter value"
+                placeholder="Enter c4c ID"
             />
 
 
-    <Button id="button2" text="Check Connection Ez mux" press="onCheckConnection2"/>
+    <Button id="button2" text="Check Connection to dlw C4C" press="onCheckConnection2"/>
+    <Button id="button3" text="Show me a fact" press="onShowFact"/>
 
     </content>
     </Page>

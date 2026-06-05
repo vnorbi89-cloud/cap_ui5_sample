@@ -21,6 +21,11 @@
     "watch-ui5": "cds watch --open main.cap.service.ui.ui5/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "cds": {
+    "log": {
+      "levels": {
+        "auth": "debug"
+      }
+    },
     "requires": {
       "auth": "xsuaa",
       "[development]": {
@@ -28,16 +33,18 @@
           "kind": "mocked"
         }
       },
-      "CDC_Accounts": {
-        "kind": "odata",
-        "credentials": {
-          "destination": "CDC_Accounts"
-        }
-      },
-      "c4c_dev": {
+      "API_FACT": {
         "kind": "rest",
         "credentials": {
-          "destination": "c4c_dev"
+          "path": "/api/v2/facts",
+          "destination": "Facts"
+        }
+      },
+      "DLW_C4C": {
+        "kind": "odata",
+        "credentials": {
+          "path": "/sap/c4c/api/v1",
+          "destination": "dlw_c4c"
         }
       }
     }

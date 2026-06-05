@@ -1,22 +1,31 @@
-# Getting Started
+///connect to destinations
 
-Welcome to your new CAP project.
+1.bind
+cds bind --to capui5-xsuaa
+cds bind --to capui5-destination-service
 
-It contains these folders and files, following our recommended project layout:
+2.update package-lock.json, add destinations
 
-File or Folder | Purpose
----------|----------
-`app/` | content for UI frontends goes here
-`db/` | your domain models and data go here
-`srv/` | your service models and code go here
-`readme.md` | this getting started guide
+3.run with profile
+cds watch --profile hybrid
 
-## Next Steps
+4.test call
+  const api = await cds.connect.to('DESTINATION');
+      const result = await api.send({
+        method: 'GET',
+        path: '/path/...'
+      });
 
-- Open a new terminal and run `cds watch`
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
-- Start with your domain model, in a CDS file in `db/`
 
-## Learn More
-
-Learn more at <https://cap.cloud.sap>.
+5.update package.json
+"cds": {
+    "requires": {    
+       "DESTINATION": {
+        "kind": "odata", ///"rest"
+        "credentials": {
+          "path": "/sap/api/...",
+          "destination": "BTP destination name"
+        }
+      }
+    }
+}

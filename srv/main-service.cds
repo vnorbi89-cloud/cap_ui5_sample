@@ -8,9 +8,18 @@ service DatabaseService @(path: '/mainservice'){
     sample2 : String
   ) returns String;
   
-  @requires: 'TestScope1'
+  //@requires: 'TestScope1'
   action checkC4CConnection(
     caseuuid : String
   ) returns String;
+
+  
+  action testFact()
+  returns {
+    displayId: String;
+      subject : String;
+      origin : String;
+      priority : String;
+  };
 
 }
