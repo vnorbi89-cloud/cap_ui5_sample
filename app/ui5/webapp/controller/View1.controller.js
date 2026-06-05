@@ -18,14 +18,15 @@ sap.ui.define([
 
                 const oAction = oModel.bindContext("/checkConnection(...)");
 
-                oAction.setParameter("sample", "123213");
-
-                const oResult = await oAction.execute();
-
+                oAction.setParameter("sample1", "first param");
+                oAction.setParameter("sample2", "second param");
+                await oAction.execute();
                 const data = oAction.getBoundContext().getObject();
 
+                const results = data.value || [];
+
                 console.log("Response:", data);
-                MessageToast.show(data.value);
+                MessageToast.show(results);
             } catch (err) {
                 console.error("Error:", err);
                 MessageToast.show(err);
