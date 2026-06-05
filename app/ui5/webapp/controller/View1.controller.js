@@ -8,7 +8,24 @@ sap.ui.define([
         onInit() {
         },
         async onCheckConnection1(oEvent) {
-           MessageToast.show("Check Connection 1 not ok");
+             try{ 
+
+                const oModel = this.getView().getModel(); // OData V4 model
+
+                const oAction = oModel.bindContext("/checkC4CConnection(...)");
+
+                oAction.setParameter("caseuuid", "asd123asd123");
+                await oAction.execute();
+                const data = oAction.getBoundContext().getObject();
+
+                const results = data.value || [];
+
+                console.log("Response:", data);
+                MessageToast.show(results);
+            } catch (err) {
+                console.error("Error:", err);
+                MessageToast.show(err);
+            }
 
         },
         async onCheckConnection2(oEvent) {

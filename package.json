@@ -4,6 +4,8 @@
   "dependencies": {
     "@sap/cds": "^9",
     "@sap/xssec": "^4.13.0",
+    "@sap-cloud-sdk/http-client": "^4.7.0",
+    "@sap-cloud-sdk/connectivity": "^4.7.0",
     "express": "^5",
     "passport": "^0.7"
   },

@@ -7,5 +7,10 @@ service DatabaseService @(path: '/mainservice'){
     sample1 : String,
     sample2 : String
   ) returns String;
+  
+  @requires: 'TestScope1'
+  action checkC4CConnection(
+    caseuuid : String
+  ) returns String;
 
 }
