@@ -1,13 +1,40 @@
-///connect to destinations
+///HYBRID TESTING, connect to destinations (Cloud and onPrem)
 
-1.bind
+1.bind xsua, destination and connectivity service
 cds bind --to capui5-xsuaa
 cds bind --to capui5-destination-service
+cds bind --to capui5-connectivity-service
 
-2.update package-lock.json, add destinations
+
+2.update .cdsrc-private.json, add destinations
+{
+  "requires": {
+    "SAP_ONPREM": {
+      "kind": "odata-v2",
+      "credentials": {
+        "url": "http://SAP_ONPREM.dest",
+        "path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER",
+        "proxyConfiguration": {
+          "host": "127.0.0.1",
+          "port": 8887,
+          "protocol": "http"
+        }
+      }
+    },
+    "SAP_C4C: {
+      "kind": "rest",
+      "credentials": {
+        "path": "/sap/c4c/api/v1",
+        "destination": "SAP_C4C"
+      }
+    },
+    "[hybrid]": { ...
+
+    
 
 3.run with profile
 cds watch --profile hybrid
+
 
 4.test call
   const api = await cds.connect.to('DESTINATION');
@@ -15,17 +42,3 @@ cds watch --profile hybrid
         method: 'GET',
         path: '/path/...'
       });
-
-
-5.update package.json
-"cds": {
-    "requires": {    
-       "DESTINATION": {
-        "kind": "odata", ///"rest"
-        "credentials": {
-          "path": "/sap/api/...",
-          "destination": "BTP destination name"
-        }
-      }
-    }
-}
